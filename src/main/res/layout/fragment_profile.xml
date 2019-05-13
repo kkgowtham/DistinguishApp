@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/image_iv"
+    android:layout_width="50dp"
+    android:layout_height="50dp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/name_tv"
+        android:text="Name"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/email_tv"
+        android:text="Email"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/sign_out_btn"
+        android:background="@color/primary"
+        android:textAllCaps="false"
+        android:text="Sign Out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

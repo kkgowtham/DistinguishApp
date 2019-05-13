@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "757667517448",
+    "firebase_url": "https://distinguish-app.firebaseio.com",
+    "project_id": "distinguish-app",
+    "storage_bucket": "distinguish-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757667517448:android:b8975d36e131e745",
+        "android_client_info": {
+          "package_name": "fictionstudios.com.distinguishapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757667517448-8rjfl6vapjcn7mckij530hhue09s18of.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fictionstudios.com.distinguishapp",
+            "certificate_hash": "bbf8e6dd56388033ccf9cf5183324d128e9a14ea"
+          }
+        },
+        {
+          "client_id": "757667517448-o1i8odq2mdovlost8iun49c76i44ikja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT78vBFfT1z2v_I9DJ1cPsXIxWpjwAKtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757667517448-o1i8odq2mdovlost8iun49c76i44ikja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
