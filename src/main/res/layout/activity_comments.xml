@@ -4,28 +4,28 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<LinearLayout
-    android:id="@+id/linear_l"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<ImageView
-    android:layout_width="45dp"
-    android:layout_height="45dp"
-    android:src="@drawable/comments"
-    />
-<TextView
-    android:gravity="center"
-    android:textSize="30sp"
-    android:textStyle="bold"
-    android:textColor="#3498DB"
-    android:text="Comments"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-     />
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_l"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/comments"
+            />
+        <TextView
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#3498DB"
+            android:text="Comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_comments"
         android:layout_below="@+id/linear_l"
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
-             />
+            />
         <Button
             android:id="@+id/send_btn"
             android:layout_weight="1"

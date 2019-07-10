@@ -1,13 +1,11 @@
 package fictionstudios.com.distinguishapp;
 
+import java.util.ArrayList;
+
 public class StaticData {
-   static private String postId;
-
-    public static String getPostId() {
-        return postId;
-    }
-
-    public static void setPostId( String postId) {
-        StaticData.postId = postId;
-    }
+   static String description;
+   static  String term1;
+   static  String term2;
+   static ArrayList<String> explain1;
+   static ArrayList<String> explain2;
 }

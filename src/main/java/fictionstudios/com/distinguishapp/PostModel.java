@@ -2,24 +2,62 @@ package fictionstudios.com.distinguishapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.util.Iterator;
+
+@Entity(tableName = "posts")
 public class PostModel implements Parcelable{
-
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name="id")
     private String id;
+
+    @ColumnInfo(name = "imageurl1")
     private String imageurl1;
+
+    @ColumnInfo(name = "imageurl2")
     private String imageurl2;
+
+    @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "term1")
     private String term1;
+
+    @ColumnInfo(name = "term2")
     private String term2;
+
+    @ColumnInfo(name = "explain1")
     private String explain1;
+
+    @ColumnInfo(name= "explain2")
     private String explain2;
+
+    @ColumnInfo(name = "date")
     private String date;
+
+    @ColumnInfo(name = "addedby")
     private String addedby;
+
+    @ColumnInfo(name = "category")
     private String category;
+
+    @ColumnInfo(name = "timestamp")
     private String timestamp;
+
+    @ColumnInfo(name = "likes")
     private String likes;
+
+    @ColumnInfo(name = "comments")
     private String comments;
+
+    @ColumnInfo(name = "thumbnail")
+    private String thumbnail;
 
     protected PostModel(Parcel in) {
         id = in.readString();
@@ -36,6 +74,7 @@ public class PostModel implements Parcelable{
         timestamp = in.readString();
         likes = in.readString();
         comments = in.readString();
+        thumbnail = in.readString();
     }
 
     public static final Creator<PostModel> CREATOR = new Creator<PostModel>() {
@@ -49,6 +88,10 @@ public class PostModel implements Parcelable{
             return new PostModel[size];
         }
     };
+
+    public PostModel() {
+
+    }
 
     public String getId() {
         return id;
@@ -167,6 +210,7 @@ public class PostModel implements Parcelable{
         return 0;
     }
 
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -183,5 +227,36 @@ public class PostModel implements Parcelable{
         dest.writeString(timestamp);
         dest.writeString(likes);
         dest.writeString(comments);
+        dest.writeString(thumbnail);
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    @Override
+    public String toString() {
+
+        return "PostModel{" +
+                "id='" + id + '\'' +
+                ", imageurl1='" + imageurl1 + '\'' +
+                ", imageurl2='" + imageurl2 + '\'' +
+                ", description='" + description + '\'' +
+                ", term1='" + term1 + '\'' +
+                ", term2='" + term2 + '\'' +
+                ", explain1='" + explain1 + '\'' +
+                ", explain2='" + explain2 + '\'' +
+                ", date='" + date + '\'' +
+                ", addedby='" + addedby + '\'' +
+                ", category='" + category + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", likes='" + likes + '\'' +
+                ", comments='" + comments + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                '}';
     }
 }

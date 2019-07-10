@@ -1,46 +1,31 @@
 package fictionstudios.com.distinguishapp;
 
-import android.app.Activity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,47 +33,41 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CommentsBottomSheets extends BottomSheetDialogFragment {
+public class CommentsActivity extends AppCompatActivity {
 
-    private static final String TAG = "CommentsBottomSheets";
+    private static final String TAG = CommentsActivity.class.getSimpleName();
 
 
     Context mContext;
-   private FirebaseUser user;
-   RecyclerView mRecyclerView;
-   CommentsRecyclerAdapter adapter;
-   List<CommentModel> mlist;
+    private FirebaseUser user;
+    RecyclerView mRecyclerView;
+    CommentsRecyclerAdapter adapter;
+    List<CommentModel> mlist;
     EditText commentEditText;
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext=context;
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_comments);
 
+        commentEditText =findViewById(R.id.comments_edittext);
+        final RelativeLayout parent = (RelativeLayout)findViewById(R.id.parent_layout);
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view=inflater.inflate(R.layout.comments_bottom_sheets_layout,container,false);
-         commentEditText =view.findViewById(R.id.comments_edittext);
-        final RelativeLayout parent = (RelativeLayout)view.findViewById(R.id.parent_layout);
-
-         mRecyclerView=view.findViewById(R.id.recyclerview_comments);
-         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-         mRecyclerView.setHasFixedSize(true);
-        view.getViewTreeObserver().addOnGlobalLayoutListener(
+        mRecyclerView=findViewById(R.id.recyclerview_comments);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setHasFixedSize(true);
+        parent.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
 
                         Rect r = new Rect();
-                        view.getWindowVisibleDisplayFrame(r);
-                        int screenHeight = view.getRootView().getHeight();
+                        parent.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = parent.getRootView().getHeight();
                         int keypadHeight = screenHeight - r.bottom;
 
                         Log.d(TAG, "keypadHeight = " + keypadHeight);
 
-                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                        if (keypadHeight > screenHeight * 0.15) {
                             Log.d(TAG, "onGlobalLayout: Keyboard SHown");
                             ViewGroup.LayoutParams params=mRecyclerView.getLayoutParams();
                             params.height=50;
@@ -96,17 +75,17 @@ public class CommentsBottomSheets extends BottomSheetDialogFragment {
                         }
                         else {
                             Log.d(TAG, "onGlobalLayout: Keyboard Dismissed");
-                            mRecyclerView.getLayoutParams().height=ViewGroup.LayoutParams.WRAP_CONTENT;
+                            mRecyclerView.getLayoutParams().height=ViewGroup.LayoutParams.MATCH_PARENT;
                             //RelativeLayout.LayoutParams params= (RelativeLayout.LayoutParams) view.getLayoutParams();
                             //params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                            // keyboard is closed
+
                         }
                     }
                 });
-         user=FirebaseAuth.getInstance().getCurrentUser();
+        user= FirebaseAuth.getInstance().getCurrentUser();
         retreiveComments();
 
-        Button button=view.findViewById(R.id.send_btn);
+        Button button=findViewById(R.id.send_btn);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,14 +103,12 @@ public class CommentsBottomSheets extends BottomSheetDialogFragment {
                 addComment(comment);
             }
         });
-        return view;
+
     }
-
-
     private void retreiveComments() {
         try {
-            Bundle bundle=getArguments();
-            String postId=bundle.getString("postid");
+
+            String postId=getIntent().getStringExtra("postid");
             Log.d(TAG, "retreiveComments: "+postId);
             Retrofit retrofit=new Retrofit.Builder().baseUrl("https://192.168.1.105/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -163,9 +140,8 @@ public class CommentsBottomSheets extends BottomSheetDialogFragment {
         String email=user.getEmail();
         String name=user.getDisplayName();
         String imageUrl=String.valueOf(user.getPhotoUrl());
-        assert getArguments() != null;
-        Bundle bundle=getArguments();
-        String postid=bundle.getString("postid");
+
+        String postid=getIntent().getStringExtra("postid");
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.105/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
         ApiService service = retrofit.create(ApiService.class);
@@ -185,6 +161,7 @@ public class CommentsBottomSheets extends BottomSheetDialogFragment {
             }
         });
     }
+
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
 
         try {
@@ -226,6 +203,5 @@ public class CommentsBottomSheets extends BottomSheetDialogFragment {
             throw new RuntimeException(e);
         }
     }
-
 
 }

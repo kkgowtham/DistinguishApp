@@ -3,18 +3,21 @@ package fictionstudios.com.distinguishapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.media.Image;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,25 +32,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnItemClickListerner,PostsRecyclerAdapter.OnCommentBtnClickListener {
 
-    Context mContext;
-    @SuppressLint("StaticFieldLeak")
+    private Context mContext;
     private static MainFragment mFragment=null;
-    FirebaseUser user;
-    boolean a=true;
+ private    FirebaseUser user;
+  private   boolean a=true;
     private static final String TAG = "MainActivity";
-    int n=0;
-    boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+  private   int n=0;
+  private   boolean loading = true;
+  private   int pastVisiblesItems, visibleItemCount, totalItemCount;
     private  RecyclerView mRecyclerView;
-    ArrayList<PostModel> mListData=new ArrayList<>();
-    ArrayList<PostModel> mTotalList=new ArrayList<>();
-    PostsRecyclerAdapter.OnItemClickListerner onItemClickListerner=this;
-    PostsRecyclerAdapter.OnCommentBtnClickListener onCommentBtnClickListener=this;
-    PostsRecyclerAdapter adapter;
-    LinearLayoutManager mLayoutManager=new LinearLayoutManager(mContext);
+  private   ArrayList<PostModel> mListData=new ArrayList<>();
+  private ArrayList<PostModel> mTotalList=new ArrayList<>();
+  private   PostsRecyclerAdapter.OnItemClickListerner onItemClickListerner=this;
+    private PostsRecyclerAdapter.OnCommentBtnClickListener onCommentBtnClickListener=this;
+  private   PostsRecyclerAdapter adapter;
+ private    LinearLayoutManager mLayoutManager=new LinearLayoutManager(mContext);
     private ArrayList<String> likeArray=new ArrayList<>();
 
     @Override
@@ -72,7 +75,8 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
         mRecyclerView.setLayoutManager(mLayoutManager);
         if (a) {
             a=false;
-            loadData();
+            //loadData();
+            getFromRoomDatabase();
         }
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
@@ -89,7 +93,7 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
                         if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
                         {
                             loading = false;
-                            loadMoreData();
+                           // loadMoreData();
                         }
                     }
                 }
@@ -102,7 +106,7 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
     }
 
     private void getUserLikes(String email) {
-        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.105/distinguish/readlike.php?email="+email, null,
+        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.103/distinguish/readlike.php?email="+email, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -127,7 +131,7 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
 
 
     private void loadData() {
-        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.105/distinguish/read.php?limit1="+n+"&limit2=10", null,
+        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.103/distinguish/read.php?limit1="+n+"&limit2=10", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -141,6 +145,9 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
                         for (PostModel model:mListData)
                         {
                             Log.d(TAG, "onResponse: "+model.toString());
+                            assert getActivity()!=null;
+                            PostViewModel viewModel= ViewModelProviders.of(getActivity()).get(PostViewModel.class);
+                            viewModel.insertPosts(mContext,model);
                         }
                         n+=10;
                     }
@@ -154,7 +161,7 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
 
     }
     private void loadMoreData() {
-        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.105/distinguish/read.php?limit1="+n+"&limit2=10", null,
+        JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, "http://192.168.1.103/distinguish/read.php?limit1="+n+"&limit2=10", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -200,6 +207,7 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
             mFragment=new MainFragment();
         }
         return mFragment;
+
     }
 
     @Override
@@ -210,6 +218,30 @@ public class MainFragment extends Fragment implements PostsRecyclerAdapter.OnIte
         intent.putExtra("data",model);
         intent.putExtra("show",true);
         startActivity(intent);
+    }
+
+    public void getFromRoomDatabase()
+    {
+        assert getActivity()!=null;
+        PostViewModel viewModel= ViewModelProviders.of(getActivity()).get(PostViewModel.class);
+        viewModel.getPosts(mContext).observe(this, new Observer<List<PostModel>>() {
+            @Override
+            public void onChanged(List<PostModel> postModels) {
+                mTotalList.addAll(postModels);
+                adapter=new PostsRecyclerAdapter(mContext,mTotalList,likeArray,onItemClickListerner,onCommentBtnClickListener);
+                mRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageView imageView=new ImageView(mContext);
+        data.getData();
+        imageView.setImageURI();
     }
 }
 

@@ -7,36 +7,45 @@
     android:orientation="vertical"
     tools:context=".AddPostActivity">
 
+    <FrameLayout
+        android:id="@+id/container_addpost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+
 <LinearLayout
-    android:weightSum="2"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/term1_textview_main"
-        android:layout_weight="1"
-        android:textSize="25sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/term2_textview_main"
-        android:textSize="25sp"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+    <ImageButton
+        android:id="@+id/image1"
+        android:layout_width="100dp"
+        android:layout_height="50dp" />
+    <ImageButton
+        android:id="@+id/image2"
+        android:layout_width="100dp"
+        android:layout_height="50dp" />
 </LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview1_add_posts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
+    <EditText
+        android:id="@+id/description_edittext"
+        android:hint="Enter Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
         android:layout_gravity="center"
         android:id="@+id/new_point_btn"
         android:text="Add new Point"
         android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="Save"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:onClick="savePost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

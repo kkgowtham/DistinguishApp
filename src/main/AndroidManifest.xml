@@ -11,14 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CommentsActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SingleItemViewActivity"
-            android:windowSoftInputMode="adjustResize"  />
+        <activity
+            android:name=".SingleItemViewActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -39,7 +42,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".AddPostActivity"></activity>
+        <activity android:name=".AddPostActivity" />
     </application>
 
 </manifest>

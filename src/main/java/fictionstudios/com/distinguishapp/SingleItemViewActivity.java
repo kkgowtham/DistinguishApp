@@ -1,17 +1,11 @@
 package fictionstudios.com.distinguishapp;
 
-import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.SharedElementCallback;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -41,17 +35,7 @@ public class SingleItemViewActivity extends AppCompatActivity {
             term2Tv.setText(model.getTerm2());
             setUpRecyclerView(model);
             boolean show=getIntent().getBooleanExtra("show",false);
-            if (show)
-            {
-                CommentsBottomSheets commentsBottomSheets=new CommentsBottomSheets();
-                Bundle bundle=new Bundle();
-                bundle.putString("postid",model.getId());
-                commentsBottomSheets.setArguments(bundle);
-                FragmentManager manager=getSupportFragmentManager();
-                assert manager != null;
-                commentsBottomSheets.show(manager,"commentdata");
-                commentsBottomSheets.setAllowEnterTransitionOverlap(true);
-            }
+
         }catch (NullPointerException e)
         {
             Log.d(TAG, "onCreate: "+e.getMessage());

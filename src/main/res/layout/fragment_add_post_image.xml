@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".AddPostImageFragment">
+
+
+    <TextView
+        android:textSize="20sp"
+        android:text="Term 1 Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageButton
+        android:id="@+id/image1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+    <TextView
+        android:textSize="20sp"
+        android:text="Term 2 Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageButton
+        android:layout_marginTop="10dp"
+        android:id="@+id/image2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <CheckBox
+        android:checked="false"
+        android:text="Create Thumbnail (Or)  Upload Thumbnail"
+        android:id="@+id/checkbox_creteThumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/attach_thumbnail_btn"
+            android:background="@drawable/ic_attachment_black_24dp"
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/previous_btn1"
+        android:text="Previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:visibility="visible"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:id="@+id/linear_layout_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/image1_thumbnail"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:id="@+id/image2_thumbnail"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>
